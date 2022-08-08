@@ -1,4 +1,4 @@
-package bike.rapido.parkinglot;
+package bike.rapido.parkinglot.observers;
 
 public class AirportSecurityPersonal implements Observer {
     private boolean hasSecurityPersonalNotified = false;

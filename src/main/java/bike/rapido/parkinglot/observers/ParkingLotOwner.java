@@ -1,4 +1,7 @@
-package bike.rapido.parkinglot;
+package bike.rapido.parkinglot.observers;
+
+import bike.rapido.parkinglot.ParkingAttendant;
+import bike.rapido.parkinglot.parkStrategy.ParkingStrategy;
 
 public class ParkingLotOwner implements Observer {
     private String signBoard;
@@ -27,5 +30,9 @@ public class ParkingLotOwner implements Observer {
     @Override
     public void notifyObserverWhenLotHasSpaceAgain() {
         removeFullSignBoard();
+    }
+
+    public void useParkingStrategy(ParkingAttendant parkingAttendant, ParkingStrategy parkingStrategy) {
+        parkingAttendant.setParkingStrategy(parkingStrategy);
     }
 }

@@ -1,5 +1,7 @@
 package bike.rapido.parkinglot;
 
+import bike.rapido.parkinglot.observers.AirportSecurityPersonal;
+import bike.rapido.parkinglot.observers.ParkingLotOwner;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -11,13 +13,13 @@ import static org.junit.Assert.*;
 public class ParkingManagementTest {
     final int TOTAL_PARKING_SLOTS = 10;
 
-    ParkingSlots parkingSlots;
+    ParkingLot parkingLot;
     Driver driver;
     Car car;
 
     @Before
     public void setUp() {
-        parkingSlots = new ParkingSlots(TOTAL_PARKING_SLOTS);
+        parkingLot = new ParkingLot(TOTAL_PARKING_SLOTS);
         driver = new Driver(TOTAL_PARKING_SLOTS);
         car = new Car("Testing the car");
     }
@@ -83,7 +85,7 @@ public class ParkingManagementTest {
     public void shouldNotNotifyOwnerIfParkingLotIsNotFull() {
         ParkingLotOwner parkingLotOwnerSpy = Mockito.spy(new ParkingLotOwner());
 
-        parkingSlots.registerForNotifyingLotIsFull(parkingLotOwnerSpy);
+        parkingLot.registerForNotifyingLotIsFull(parkingLotOwnerSpy);
         boolean isCarParked = driver.parkVehicle(car);
         String signBoard = parkingLotOwnerSpy.getSignBoard();
 
@@ -112,7 +114,7 @@ public class ParkingManagementTest {
     public void shouldNotNotifyAirportSecurityPersonalIfParkingLotIsNotFull() {
         AirportSecurityPersonal airportSecurityPersonalSpy = Mockito.spy(new AirportSecurityPersonal());
 
-        parkingSlots.registerForNotifyingLotIsFull(airportSecurityPersonalSpy);
+        parkingLot.registerForNotifyingLotIsFull(airportSecurityPersonalSpy);
         boolean isCarParked = driver.parkVehicle(car);
         boolean hasSecurityPersonalNotified = airportSecurityPersonalSpy.isSecurityPersonalNotified();
 
