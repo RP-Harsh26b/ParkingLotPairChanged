@@ -1,7 +1,10 @@
 bike/rapido/parkinglot/Car.class
-bike/rapido/parkinglot/Observer.class
+bike/rapido/parkinglot/observers/Observer.class
+bike/rapido/parkinglot/observers/ParkingLotOwner.class
 bike/rapido/parkinglot/ParkingAttendant.class
-bike/rapido/parkinglot/AirportSecurityPersonal.class
-bike/rapido/parkinglot/ParkingLotOwner.class
+bike/rapido/parkinglot/ParkingLot.class
+bike/rapido/parkinglot/observers/AirportSecurityPersonal.class
+bike/rapido/parkinglot/parkStrategy/ParkingStrategy.class
+bike/rapido/parkinglot/parkStrategy/EvenDistributedParkingStrategy.class
 bike/rapido/parkinglot/Driver.class
-bike/rapido/parkinglot/ParkingSlots.class
+bike/rapido/parkinglot/parkStrategy/FirstFreeParkingStrategy.class

@@ -1,5 +1,7 @@
 package bike.rapido.parkinglot;
 
+import bike.rapido.parkinglot.observers.ParkingLotOwner;
+import bike.rapido.parkinglot.parkStrategy.EvenDistributedParkingStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +19,14 @@ public class ParkingAttendantTest {
         int TOTAL_SLOTS = 10;
         int TOTAL_LOTS = 5;
         parkingAttendant = new ParkingAttendant(TOTAL_LOTS, TOTAL_SLOTS);
+    }
+
+    private void parkTheCarsAndUpdateTheirStatus(int carsToBeParked, Car[] carNames, boolean[] carParkedStatus, ParkingAttendant parkingAttendant) {
+        for (int carsParked = 0; carsParked < carsToBeParked; carsParked++) {
+            Car carPark = new Car("C" + carsParked);
+            carNames[carsParked] = carPark;
+            carParkedStatus[carsParked] = parkingAttendant.parkTheCar(carPark);
+        }
     }
 
     @Test
@@ -75,22 +85,15 @@ public class ParkingAttendantTest {
         assertTrue(isCarUnParked);
     }
 
-//     @Test
-//     public void attendantShouldNotBeAbleToParkTheCarWithNoSlotsAndNoLots() {
-//     ParkingAttendant parkingAttendant = new ParkingAttendant(0, 0);
-//     Car car = new Car("Testing mercedes");
-//
-//     boolean isCarParked = parkingAttendant.parkTheCar(car);
-//
-//     assertFalse(isCarParked);
-//     }
-
     @Test
     public void shouldReturnTheSlotWhereACarIsParked() {
         int carsToBeParked = 3;
         int totalSlots = 3, totalLots = 2;
         ParkingAttendant parkingAttendant = new ParkingAttendant(totalLots,
             totalSlots);
+        ParkingLotOwner lotOwner = new ParkingLotOwner();
+        lotOwner.useParkingStrategy(parkingAttendant, new EvenDistributedParkingStrategy(parkingAttendant.getParkingLots()));
+
 
         for (int carsParked = 0; carsParked < carsToBeParked; carsParked++) {
             String currentCar = UUID.randomUUID().toString();
@@ -116,6 +119,8 @@ public class ParkingAttendantTest {
         Car car = new Car("DL5CQ 0258");
         boolean[] carParkedStatus = new boolean[3];
         ParkingAttendant parkingAttendant = new ParkingAttendant(totalLots, totalSlots);
+        ParkingLotOwner lotOwner = new ParkingLotOwner();
+        lotOwner.useParkingStrategy(parkingAttendant, new EvenDistributedParkingStrategy(parkingAttendant.getParkingLots()));
 
 
         parkTheCarsAndUpdateTheirStatus(carsToBeParked, carNames, carParkedStatus, parkingAttendant);
@@ -133,11 +138,4 @@ public class ParkingAttendantTest {
         assertArrayEquals(carParkedAtSpot, expectedCarParkedAt);
     }
 
-    private void parkTheCarsAndUpdateTheirStatus(int carsToBeParked, Car[] carNames, boolean[] carParkedStatus, ParkingAttendant parkingAttendant) {
-        for (int carsParked = 0; carsParked < carsToBeParked; carsParked++) {
-            Car carPark = new Car("C" + carsParked);
-            carNames[carsParked] = carPark;
-            carParkedStatus[carsParked] = parkingAttendant.parkTheCar(carPark);
-        }
-    }
 }

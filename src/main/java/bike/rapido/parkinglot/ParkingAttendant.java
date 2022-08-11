@@ -1,26 +1,38 @@
 package bike.rapido.parkinglot;
 
+import bike.rapido.parkinglot.parkStrategy.FirstFreeParkingStrategy;
+import bike.rapido.parkinglot.parkStrategy.ParkingStrategy;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingAttendant {
-    List<ParkingSlots> parkingSlots;
+
+    List<ParkingLot> parkingLots;
+    ParkingStrategy parkingStrategy;
 
     ParkingAttendant(int totalLots, int totalSlots) {
-        this.parkingSlots = new ArrayList<>();
+        this.parkingLots = new ArrayList<>();
         for (int count = 0; count < totalLots; count++) {
-            parkingSlots.add(new ParkingSlots(totalSlots));
+            parkingLots.add(new ParkingLot(totalSlots));
         }
+        this.parkingStrategy = new FirstFreeParkingStrategy(parkingLots);
+    }
+
+    public List<ParkingLot> getParkingLots() {
+        return this.parkingLots;
+    }
+
+    public void setParkingStrategy(ParkingStrategy parkingStrategy) {
+        this.parkingStrategy = parkingStrategy;
     }
 
     public boolean parkTheCar(Car car) {
-        int lotIdToParkCarIn = getParkingSlotAreaIdWithMinimumCarsParked();
-        ParkingSlots parkCarInSlot = parkingSlots.get(lotIdToParkCarIn);
-        return parkCarInSlot.parkACar(car);
+        return parkingStrategy.parkAccordingToStrategy(car);
     }
 
     public boolean getEmptySlots() {
-        for (ParkingSlots ele : parkingSlots) {
+        for (ParkingLot ele : parkingLots) {
             if (ele.isFullyEmpty()) {
                 return true;
             }
@@ -29,7 +41,7 @@ public class ParkingAttendant {
     }
 
     public boolean unParkTheCar(Car car) {
-        for (ParkingSlots ele : this.parkingSlots) {
+        for (ParkingLot ele : this.parkingLots) {
             if (ele.getCar(car)) {
                 return ele.unParkACar(car);
             }
@@ -38,12 +50,11 @@ public class ParkingAttendant {
     }
 
     public int[] getSlotDetailsWhereCarIsParked(Car car) {
-
-        for (int count = 0; count < parkingSlots.size(); count++) {
-            if (parkingSlots.get(count).getCar(car)) {
+        for (int count = 0; count < parkingLots.size(); count++) {
+            if (parkingLots.get(count).getCar(car)) {
 
                 int[] parkingSlotDetails = new int[2];
-                int slotId = parkingSlots.get(count).getSlotIdWhereCarIsParked(car);
+                int slotId = parkingLots.get(count).getSlotIdWhereCarIsParked(car);
 
                 parkingSlotDetails[0] = count;
                 parkingSlotDetails[1] = slotId;
@@ -53,20 +64,4 @@ public class ParkingAttendant {
         }
         return new int[2];
     }
-
-    private int getParkingSlotAreaIdWithMinimumCarsParked() {
-        int parkingSlotId = 0;
-        int carsParkedInASlot = Integer.MIN_VALUE;
-
-        for (int count = 0; count < parkingSlots.size(); ++count) {
-            int carsParkedInCurrentSlot = parkingSlots.get(count).getEmptySlots();
-
-            if (carsParkedInASlot < carsParkedInCurrentSlot) {
-                carsParkedInASlot = carsParkedInCurrentSlot;
-                parkingSlotId = count;
-            }
-        }
-        return parkingSlotId;
-    }
-
 }

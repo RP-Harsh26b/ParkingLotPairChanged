@@ -1,10 +1,13 @@
 package bike.rapido.parkinglot;
 
+import bike.rapido.parkinglot.observers.Observer;
+import bike.rapido.parkinglot.observers.ParkingLotOwner;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-class ParkingSlots {
+public class ParkingLot {
     private final int totalSlots;
     private final ArrayList<Observer> registeredObserversForNotifyingLotIsFull;
     private final ArrayList<Observer> registeredObserversForNotifyingLotHasSpaceAgain;
@@ -12,7 +15,7 @@ class ParkingSlots {
     private final HashMap<Car, Integer> carUnParkedDLotsDetails;
     private int availableSlots;
 
-    public ParkingSlots(int totalSlots) {
+    public ParkingLot(int totalSlots) {
         this.availableSlots = totalSlots;
         this.totalSlots = totalSlots;
 

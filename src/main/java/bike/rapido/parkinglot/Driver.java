@@ -1,15 +1,15 @@
 package bike.rapido.parkinglot;
 
 public class Driver {
-    private final ParkingSlots parkingSlots;
+    private final ParkingLot parkingLot;
 
     Driver(final int totalSlots) {
-        this.parkingSlots = new ParkingSlots(totalSlots);
+        this.parkingLot = new ParkingLot(totalSlots);
     }
 
     public boolean parkVehicle(Car car) {
-        if (parkingSlots.isAvailable()) {
-            parkingSlots.parkACar(car);
+        if (parkingLot.isAvailable()) {
+            parkingLot.parkACar(car);
             return true;
         } else {
             return false;
@@ -17,15 +17,15 @@ public class Driver {
     }
 
     public boolean unParkVehicle(Car car) {
-        if (parkingSlots.isFullyEmpty()) {
+        if (parkingLot.isFullyEmpty()) {
             return false;
         } else {
-            parkingSlots.unParkACar(car);
+            parkingLot.unParkACar(car);
             return true;
         }
     }
 
-    public ParkingSlots getParkingSlot() {
-        return this.parkingSlots;
+    public ParkingLot getParkingSlot() {
+        return this.parkingLot;
     }
 }
